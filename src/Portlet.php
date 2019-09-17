@@ -63,6 +63,20 @@ class Portlet extends \kilyakus\widgets\Widget
     const TOOL_RELOAD = 'reload';
     const TOOL_CLOSE = 'remove';
 
+    const HEAD_FIT_NONE = '';
+    const HEAD_FIT = 'fit';
+
+    const BODY_FIT_NONE = '';
+    const BODY_FIT = 'fit';
+    const BODY_FIT_TOP = 'fit-top';
+    const BODY_FIT_BOTTOM = 'fit-bottom';
+    const BODY_FIT_X = 'fit-x';
+    const BODY_HOR_FIT = 'hor-fit';
+    const BODY_FIT_Y = 'fit-y';
+
+    const FOOT_FIT_NONE = '';
+    const FOOT_FIT = 'fit';
+
     public $title;
     public $subtitle;
     public $icon;
