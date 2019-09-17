@@ -8,6 +8,10 @@
             "email": "aleksandr.kilyakov@gmail.com"
         }
     ],
+    "require": {
+        "yiisoft/yii2": "*",
+        "kilyakus/yii2-widget-nav": "*",
+    },
     "autoload": {
         "psr-4": {
             "kilyakus\\portlet\\": "src"
