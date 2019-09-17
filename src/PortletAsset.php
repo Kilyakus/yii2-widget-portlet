@@ -1,7 +1,7 @@
 <?php
 namespace kilyakus\portlet;
 
-class ButtonAsset extends \kilyakus\widgets\AssetBundle
+class PortletAsset extends \kilyakus\widgets\AssetBundle
 {
     public function init()
     {
