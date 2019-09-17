@@ -8,48 +8,10 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use kilyakus\nav\Nav;
 
-/*
-    Модуль еще в доработке, использовать на свой страх и риск 
-    
-    Examples:
-
-    Portlet renders a engine portlet.
-    Any content enclosed between the [[begin()]] and [[end()]] calls of Portlet
-    is treated as the content of the portlet.
-
-    Portlet::begin([
-      'icon' => 'fa fa-check',
-      'title' => 'Title Portlet',
-    ]);
-    echo 'Body portlet';
-    Portlet::end();
-
-    Portlet with tools, actions, scroller, events and remote content
-
-    Portlet::begin([
-      'title' => 'Extended Portlet',
-      'scroller' => [
-        'height' => 150,
-        'footer' => ['label' => 'Show all', 'url' => '#'],
-      ],
-      'clientOptions' => [
-        'loadSuccess' => new \yii\web\JsExpression('function(){ console.log("load success"); }'),
-        'remote' => '/?r=site/about',
-      ],
-      'clientEvents' => [
-        'close.mr.portlet' => 'function(e) { console.log("portlet closed"); e.preventDefault(); }'
-      ],
-      'tools' => [
-        Portlet::TOOL_RELOAD,
-        Portlet::TOOL_MINIMIZE,
-        Portlet::TOOL_CLOSE,
-      ],
-    ]);
-*/
-
 class Portlet extends \kilyakus\widgets\Widget
 {
     public $pluginName = 'portlet';
+    public $pluginSupport = false; // true - посмотреть информацию по использованию плагина
 
     const TYPE_NONE = '';
     const TYPE_DEFAULT = 'default';
@@ -164,20 +126,26 @@ class Portlet extends \kilyakus\widgets\Widget
     public function init()
     {
         parent::init();
+
+        if($this->pluginSupport === true){
+
+          $this->_supportInfo();
+          
+        } else {
         
-        $this->background = $this->background ? 'kt-bg-'.$this->background : '';
+          $this->background = $this->background ? 'kt-bg-'.$this->background : '';
 
-        Html::addCssClass($this->options, trim(sprintf('kt-portlet kt-portlet--mobile %s %s', $this->type, $this->background)));
-        echo '<!-- begin:: Widgets/Portlet -->';
-        echo Html::beginTag('div', $this->options);
+          Html::addCssClass($this->options, trim(sprintf('kt-portlet kt-portlet--mobile %s %s', $this->type, $this->background)));
+          echo '<!-- begin:: Widgets/Portlet -->';
+          echo Html::beginTag('div', $this->options);
 
-        $this->_renderTitle();
+          $this->_renderTitle();
 
-        $this->_renderScrollerBegin();
+          $this->_renderScrollerBegin();
 
-        Html::addCssClass($this->bodyOptions, 'kt-portlet__body');
-        echo Html::beginTag('div', $this->bodyOptions);
-
+          Html::addCssClass($this->bodyOptions, 'kt-portlet__body');
+          echo Html::beginTag('div', $this->bodyOptions);
+      }
     }
 
     /**
@@ -398,5 +366,51 @@ class Portlet extends \kilyakus\widgets\Widget
         }
 
         return $string;
+    }
+
+    private function _supportInfo()
+    {
+        echo "<pre>
+  Модуль еще в доработке, использовать на свой страх и риск 
+  
+  Examples:
+
+  Portlet renders a engine portlet.
+  Any content enclosed between the [[begin()]] and [[end()]] calls of Portlet
+  is treated as the content of the portlet.
+
+  Portlet::begin([
+    'icon' => 'fa fa-check',
+    'title' => 'Title Portlet',
+    'pluginSupport' => false,
+  ]);
+  echo 'Body portlet';
+  Portlet::end();
+
+  Portlet with tools, actions, scroller, events and remote content
+
+  Portlet::begin([
+    'title' => 'Extended Portlet',
+    'scroller' => [
+      'height' => 150,
+      'footer' => ['label' => 'Show all', 'url' => '#'],
+    ],
+    'clientOptions' => [
+      'loadSuccess' => new \yii\web\JsExpression('function(){ console.log(\"load success\"); }'),
+      'remote' => '/?r=site/about',
+    ],
+    'clientEvents' => [
+      'close.mr.portlet' => 'function(e) { console.log(\"portlet closed\"); e.preventDefault(); }'
+    ],
+    'tools' => [
+      Portlet::TOOL_RELOAD,
+      Portlet::TOOL_MINIMIZE,
+      Portlet::TOOL_CLOSE,
+    ],
+    'pluginSupport' => false,
+  ]);
+  echo 'Body portlet';
+  Portlet::end();
+          </pre>";
     }
 }
