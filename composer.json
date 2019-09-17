@@ -10,7 +10,7 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "kilyakus/yii2-widget-nav": "*",
+        "kilyakus/yii2-widget-nav": "*"
     },
     "autoload": {
         "psr-4": {
