@@ -6,6 +6,7 @@ use yii\base\InvalidConfigException;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
+use kilyakus\nav\Nav;
 
 /*
     Модуль еще в доработке, использовать на свой страх и риск 
