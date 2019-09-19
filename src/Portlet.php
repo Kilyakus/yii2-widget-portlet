@@ -249,7 +249,7 @@ class Portlet extends \kilyakus\widgets\Widget
     {
         if (!empty($this->actions))
         {
-            echo Html::tag('div', implode("\n", $this->actions), ['class' => 'actions']);
+            echo Html::tag('div', Html::tag('div', implode("\n", $this->actions), ['class' => 'kt-portlet__head-actions']), ['class' => 'kt-portlet__head-toolbar']);
         }
     }
 
