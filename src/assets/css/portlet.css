@@ -1,4 +1,4 @@
-.kt-portlet--tabs .kt-nav {display:inherit;padding:0;}
+.kt-portlet--tabs .kt-nav {display:inherit!important;padding:0;}
 
 .kt-portlet--tabs .nav-pills.nav-tabs-btn {margin:0 0 -1px 0;}
   .kt-portlet--tabs .nav-pills.nav-tabs-btn.nav-tabs-btn-2x {margin:0 0 -2px 0;}
