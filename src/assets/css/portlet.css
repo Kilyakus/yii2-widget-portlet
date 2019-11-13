@@ -249,3 +249,19 @@
   .kt-portlet--tabs .nav-pills.nav-tabs-btn.nav-tabs-btn-2x {margin:0 0 -2px 0;}
   .kt-portlet--tabs .nav-pills.nav-tabs-btn li {display:flex;align-items:stretch;}
     .kt-portlet--tabs .nav-pills.nav-tabs-btn li a {display:flex;align-items:center;}*/
+
+.kt-portlet table.table {margin-bottom:0;}
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit table.table > thead > tr > th:first-child,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit table.table > tbody > tr > td:first-child,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit-x table.table > thead > tr > th:first-child,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit-x table.table > tbody > tr > td:first-child {border-left:0;}
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit table.table > thead > tr > th:last-child,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit table.table > tbody > tr > td:last-child,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit-x table.table > thead > tr > th:last-child,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit-x table.table > tbody > tr > td:last-child {border-right:0;}
+
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit table.table > tbody > tr:last-child > td,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit-bottom table.table > tbody > tr:last-child > td,
+.kt-portlet .kt-portlet__body.kt-portlet__body--fit-y table.table > tbody > tr:last-child > td {border-bottom:0;}
+
+.kt-portlet ul.pagination {margin:0;}

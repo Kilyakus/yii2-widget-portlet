@@ -314,7 +314,9 @@ class Portlet extends \kilyakus\widgets\Widget
     {
         if($this->footerContent || $this->footer){
 
-            echo Html::beginTag('div', ['class' => 'kt-portlet__foot']);
+            Html::addCssClass($this->footerOptions, 'kt-portlet__foot align-items-center');
+
+            echo Html::beginTag('div', $this->footerOptions);
 
             if($this->footerContent){
 
@@ -322,18 +324,10 @@ class Portlet extends \kilyakus\widgets\Widget
 
             }elseif ($this->footer)
             {
-                
-
-                Html::addCssClass($this->footerOptions, 'align-items-center');
-
-                echo Html::beginTag('div', $this->footerOptions);
-
                 echo Nav::widget([
                     'encodeLabels' => false,
                     'items' => $this->footer,
                 ]);
-
-                echo Html::endTag('div');
             }
 
             echo Html::endTag('div');
