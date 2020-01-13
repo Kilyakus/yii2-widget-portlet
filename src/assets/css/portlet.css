@@ -56,7 +56,7 @@
     .kt-portlet .kt-portlet__foot.kt-portlet__foot--top {border-top:0;border-bottom:1px solid #ebedf2;}
     .kt-portlet .kt-portlet__foot.kt-portlet__foot--solid {background-color:#f7f8fa;border-top:0;}
       .kt-portlet .kt-portlet__foot.kt-portlet__foot--solid.kt-portlet__foot--top {border-bottom:0;}
-  .kt-portlet.kt-portlet--bordered {box-shadow:none;border:1px solid #ebedf2;}
+  .kt-portlet.kt-portlet--bordered {border:1px solid #ebedf2;}
   .kt-portlet.kt-portlet--unelevate {box-shadow:none;}
   .kt-portlet.kt-portlet--unround .kt-portlet__head {border-top-left-radius:0;border-top-right-radius:0;}
   .kt-portlet.kt-portlet--unround .kt-portlet__body {border-bottom-left-radius:0;border-bottom-right-radius:0;}

@@ -7,11 +7,12 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use kilyakus\nav\Nav;
+use kilyakus\widget\scrollbar\Scrollbar;
 
 class Portlet extends \kilyakus\widgets\Widget
 {
     public $pluginName = 'portlet';
-    public $pluginSupport = false; // true - посмотреть информацию по использованию плагина
+    public $pluginSupport = false;
 
     const TYPE_NONE = '';
     const TYPE_DEFAULT = 'default';
@@ -72,57 +73,43 @@ class Portlet extends \kilyakus\widgets\Widget
     public $tools = [];
 
     /**
-     * @var array Scroller options
-     * is an array of the following structure:
-     * ```php
-     * [
-     *   // required, height of the body portlet as a px
-     *   'height' => 150,
-     *   // optional, HTML attributes of the scroller
-     *   'options' => [],
-     *   // optional, footer of the scroller. May contain string or array(the options of Link component)
-     *   'footer' => [
-     *     'label' => 'Show all',
-     *   ],
-     * ]
-     * ```
+      Scroller options
+      Тут потом переделаю на виджет, у него будут свои надстройки
+      ```php
+      [
+        // required, height of the body portlet as a px
+        'height' => 150,
+        // optional, HTML attributes of the scroller
+        'options' => [],
+        // optional, footer of the scroller. May contain string or array(the options of Link component)
+        'footer' => [
+          'label' => 'Show all',
+        ],
+      ]
+      ```
      */
-    public $scroller = [];
+    public $scrollbar = [];
 
-    /**
-     * @var bool Whether the portlet should be bordered
-     */
-    public $bordered = false;
+    public $bordered = true;
 
-    /**
-     * @var array The HTML attributes for the widget container
-     */
+    public $unelevate = false;
+
+    // portlet container
     public $options = [];
 
-    /**
-     * @var array The HTML attributes for the widget body container
-     */
+    // body container
     public $bodyOptions = [];
+    public $bodyCover = self::BODY_FIT_NONE;
 
-    /**
-     * @var array The HTML attributes for the widget body container
-     */
+    // header
     public $headerOptions = [];
-
     public $headerContent;
 
-    /**
-     * @var array The HTML attributes for the widget body container
-     */
+    // footer ( content использовать для вставки штмл чистоганом если влом разбираться с []footer )
     public $footerOptions = [];
-
     public $footerContent;
-
     public $footer = [];
 
-    /**
-     * Initializes the widget.
-     */
     public function init()
     {
         parent::init();
@@ -136,38 +123,53 @@ class Portlet extends \kilyakus\widgets\Widget
           $this->background = $this->background ? 'kt-bg-'.$this->background : '';
 
           Html::addCssClass($this->options, trim(sprintf('kt-portlet kt-portlet--mobile %s %s', $this->type, $this->background)));
+
+          if($this->bordered){
+            Html::addCssClass($this->options, 'kt-portlet--bordered');
+          }
+
+          if($this->unelevate){
+            Html::addCssClass($this->options, 'kt-portlet--unelevate');
+          }
+
           echo '<!-- begin:: Widgets/Portlet -->';
           echo Html::beginTag('div', $this->options);
 
           $this->_renderTitle();
 
-          $this->_renderScrollerBegin();
+          if(!empty($this->scrollbar)){
+            if(!$this->scrollbar['id']){
+              $this->scrollbar['id'] = $this->id;
+            }
+            Scrollbar::begin($this->scrollbar);
+          }
 
           Html::addCssClass($this->bodyOptions, 'kt-portlet__body');
+
+          if($this->bodyCover !== self::BODY_FIT_NONE){
+            Html::addCssClass($this->bodyOptions, trim(sprintf('kt-portlet__body--%s', $this->bodyCover)));
+          }
+
           echo Html::beginTag('div', $this->bodyOptions);
       }
     }
 
-    /**
-     * Renders the widget.
-     */
     public function run()
     {
-        $this->_renderScrollerEnd();
+        if(!empty($this->scrollbar)){
+            Scrollbar::end();
+        }
 
         echo Html::endTag('div'); // End portlet body
         $this->_renderFooter();
         echo Html::endTag('div'); // End portlet div
         echo '<!-- end:: Widgets/Portlet -->';
-        //$loader = Html::img( ???  ::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif');
+        //$loader = Html::img( ---  ::getAssetsUrl($this->view) . '/img/loading-spinner-grey.gif'); Тут пока шляпа
         //$this->clientOptions['loader'] = ArrayHelper::getValue($this->clientOptions, 'loader', $loader);
         PortletAsset::register($this->view);
-        //$this->registerPlugin('portlet');
+        //$this->registerPlugin('portlet'); Тут тоже, надо переосмыслить текущее
     }
 
-    /**
-     * Renders portlet title
-     */
     private function _renderTitle()
     {
         if($this->headerContent){
@@ -209,9 +211,6 @@ class Portlet extends \kilyakus\widgets\Widget
         }
     }
 
-    /**
-     * Renders portlet tools
-     */
     private function _renderTools()
     {
         if (!empty($this->tools))
@@ -242,71 +241,11 @@ class Portlet extends \kilyakus\widgets\Widget
         }
     }
 
-    /**
-     * Renders portlet actions
-     */
     private function _renderActions()
     {
         if (!empty($this->actions))
         {
             echo Html::tag('div', Html::tag('div', implode("\n", $this->actions), ['class' => 'kt-portlet__head-actions']), ['class' => 'kt-portlet__head-toolbar']);
-        }
-    }
-
-    /**
-     * Renders scroller begin
-     * @throws InvalidConfigException
-     */
-    private function _renderScrollerBegin()
-    {
-        if (!empty($this->scroller))
-        {
-            if (!isset($this->scroller['height']))
-            {
-                Yii::$app->session->setFlash('error', 'Widgets/' . (new \ReflectionClass(get_class($this)))->getShortName() . ': ' . Yii::t('easyii', 'The "height" option of the scroller is required.'));
-            }
-            $options = ArrayHelper::getValue($this->scroller, 'options', []);
-
-            $checkFormat = ($this->scroller['format'] ? $this->scroller['format'] : ($this->scroller['format'] = 'px')) == 'px';
-
-            echo Html::beginTag(
-                    'div', ArrayHelper::merge(
-                            (
-                                $checkFormat ? [
-                                    'data-scroll' => 'true', 'data-height' => $this->scroller['height'], 'data-mobile-height' => $this->scroller['height']
-                                ] : [
-                                    'data-scroll' => 'true',
-                                ]
-                            ), $options, [
-                                'style' => 'height:' . $this->scroller['height'] . $this->scroller['format'] . ';max-height:' . $this->scroller['max-height'] . $this->scroller['format'] . ';'
-                            ]
-                    )
-            );
-        }
-    }
-
-    /**
-     * Renders scroller end
-     */
-    private function _renderScrollerEnd()
-    {
-        if (!empty($this->scroller))
-        {
-            echo Html::endTag('div');
-            $footer = ArrayHelper::getValue($this->scroller, 'footer', '');
-            if (!empty($footer))
-            {
-                echo Html::beginTag('div', ['class' => 'scroller-footer']);
-                if (is_array($footer))
-                {
-                    echo Html::tag('div', Link::widget($footer), ['class' => 'pull-right']);
-                }
-                elseif (is_string($footer))
-                {
-                    echo $footer;
-                }
-                echo Html::endTag('div');
-            }
         }
     }
 
@@ -334,9 +273,6 @@ class Portlet extends \kilyakus\widgets\Widget
         }
     }
 
-    /**
-     * Retrieves font color
-     */
     protected function getFontColor()
     {
         if ($this->color)
@@ -347,9 +283,6 @@ class Portlet extends \kilyakus\widgets\Widget
         return '';
     }
 
-    /**
-     * Pushes font color to given string
-     */
     protected function pushFontColor($string)
     {
         $color = $this->getFontColor();
