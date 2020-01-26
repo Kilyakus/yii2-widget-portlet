@@ -90,9 +90,15 @@ class Portlet extends \kilyakus\widgets\Widget
      */
     public $scrollbar = [];
 
+    public $mobile = true;
+
     public $bordered = true;
 
     public $unelevate = false;
+
+    public $fluid = false;
+
+    public $last = false;
 
     // portlet container
     public $options = [];
@@ -100,6 +106,8 @@ class Portlet extends \kilyakus\widgets\Widget
     // body container
     public $bodyOptions = [];
     public $bodyCover = self::BODY_FIT_NONE;
+
+    public $content;
 
     // header
     public $headerOptions = [];
@@ -122,7 +130,11 @@ class Portlet extends \kilyakus\widgets\Widget
         
           $this->background = $this->background ? 'kt-bg-'.$this->background : '';
 
-          Html::addCssClass($this->options, trim(sprintf('kt-portlet kt-portlet--mobile %s %s', $this->type, $this->background)));
+          Html::addCssClass($this->options, trim(sprintf('kt-portlet %s %s', $this->type, $this->background)));
+
+          if($this->mobile){
+            Html::addCssClass($this->options, 'kt-portlet--mobile');
+          }
 
           if($this->bordered){
             Html::addCssClass($this->options, 'kt-portlet--bordered');
@@ -132,15 +144,20 @@ class Portlet extends \kilyakus\widgets\Widget
             Html::addCssClass($this->options, 'kt-portlet--unelevate');
           }
 
+          if($this->fluid){
+            Html::addCssClass($this->options, 'kt-portlet--fluid');
+          }
+
+          if($this->last){
+            Html::addCssClass($this->options, 'kt-portlet--last');
+          }
+
           echo '<!-- begin:: Widgets/Portlet -->';
           echo Html::beginTag('div', $this->options);
 
           $this->_renderTitle();
 
           if(!empty($this->scrollbar)){
-            if(!$this->scrollbar['id']){
-              $this->scrollbar['id'] = $this->id;
-            }
             Scrollbar::begin($this->scrollbar);
           }
 
@@ -156,6 +173,8 @@ class Portlet extends \kilyakus\widgets\Widget
 
     public function run()
     {
+        echo $this->content;
+
         if(!empty($this->scrollbar)){
             Scrollbar::end();
         }
