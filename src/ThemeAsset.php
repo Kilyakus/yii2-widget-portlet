@@ -1,7 +1,7 @@
 <?php
 namespace kilyakus\portlet;
 
-class ThemeAsset extends \kilyakus\widgets\AssetBundle
+class ThemeAsset extends \yii\web\AssetBundle
 {
     public $depends = [
         'kilyakus\portlet\PortletAsset'

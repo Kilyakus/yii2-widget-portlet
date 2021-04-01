@@ -1,12 +1,14 @@
 <?php
 namespace kilyakus\portlet;
 
-class ThemeDefaultAsset extends \kilyakus\widgets\AssetBundle
+class ThemeDefaultAsset extends \yii\web\AssetBundle
 {
     public function init()
     {
-        $this->setSourcePath(__DIR__ . '/assets');
-        $this->setupAssets('css', ['css/portlet-default'],'widget-portlet-theme-default');
+        $this->sourcePath = __DIR__ . '/assets';
+
+        $this->css[] = 'css/widget-portletdefault.min.css';
+
         parent::init();
     }
 }
